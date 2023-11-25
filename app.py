@@ -8,7 +8,8 @@ from streamlit_lottie import st_lottie
 from st_on_hover_tabs import on_hover_tabs
 import math
 from pieChart import pieChart , pieChart4,pieChart9
-from SheetsConnection import File
+# from SheetsConnection import File
+from GetData import ProgressData
 from lineChart import LineChart
 from SubHeadingText import subheadingtext
 from ProgressBar import progressBar
@@ -56,8 +57,27 @@ st.markdown(hide_streamlit_style,unsafe_allow_html=True)
 lottie_file1 =load_lottie_file('./assets/GD.json')
 lottie_file2 =load_lottie_file('./assets/GDSC.json')
 lottie_file3 =load_lottie_file('./assets/GLoading.json')
+# file = File()
+with st.sidebar:
+    st_lottie(lottie_file2,speed=0.5,reverse=False,height=100,width=260)
+    # tabs = on_hover_tabs(tabName=['Dashboard','Cloud Foundations','GenAI'], 
+    tabs = on_hover_tabs(tabName=['Dashboard','Participant Progress',], 
+    # tabs = on_hover_tabs(tabName=['Dashboard'], 
+                         iconName=['bar_chart_4_bars', 'groups','sports_esports'], default_choice=0,
+                         styles = {'navtab': {'background-color':'#272731',
+                                                  'color': '#818181',
+                                                  'font-size': '18px',
+                                                  'transition': '.3s',
+                                                  'white-space': 'nowrap',
+                                                  'text-transform': 'uppercase'},
+                                    'tabOptionsStyle': {':hover :hover': {'color': 'orangered',
+                                                                      'cursor': 'pointer'}},              
+                                                  
+                                                  },
+                         )
+    day=st.number_input("Select Day : 1-30",min_value=1,max_value=30,step=1)    
 
-file = File()
+file = ProgressData(day)
 if file is not None:
     # Df = pd.read_csv(file)
     Df = file
@@ -70,7 +90,7 @@ if file is not None:
     Tno_count = (Df['Total Completions of both Pathways'] == 'No').sum()
     # Calculate the frequency of values in '# of Courses Completed'
     courses_completed_frequency = Df['# of Courses Completed'].value_counts()
-    for i in range(0,4):
+    for i in range(0,5):
         if i not in courses_completed_frequency:
             courses_completed_frequency[i]=0
     # Calculate the frequency of values in '# of Skill Badges Completed'
@@ -93,52 +113,37 @@ if file is not None:
     condition = ~(Ndf[["# of Courses Completed", "# of GenAI Game Completed", "# of Skill Badges Completed"]] == 0).all(axis=1)
     # Apply the condition to filter rows
     Ndf = Ndf.loc[condition]
-    # Ndf = Sort_List(Ndf)
+    Ndf = Sort_List(Ndf)
     Ndf.index = range(1, len(Ndf) + 1)
 
 
-with st.sidebar:
-    st_lottie(lottie_file2,speed=0.5,reverse=False,height=100,width=260)
-    # tabs = on_hover_tabs(tabName=['Dashboard','Cloud Foundations','GenAI'], 
-    tabs = on_hover_tabs(tabName=['Dashboard','Participant Progress',], 
-    # tabs = on_hover_tabs(tabName=['Dashboard'], 
-                         iconName=['bar_chart_4_bars', 'groups','sports_esports'], default_choice=0,
-                         styles = {'navtab': {'background-color':'#272731',
-                                                  'color': '#818181',
-                                                  'font-size': '18px',
-                                                  'transition': '.3s',
-                                                  'white-space': 'nowrap',
-                                                  'text-transform': 'uppercase'},
-                                    'tabOptionsStyle': {':hover :hover': {'color': 'orangered',
-                                                                      'cursor': 'pointer'}},              
-                                                  
-                                                  },
-                         )
-
+    
 if tabs =='Dashboard':
     c1,c2= st.columns([0.3,1.2])
     with c1: 
         st_lottie(lottie_file1,speed=0.5,reverse=False,height=150,width=300)
     with c2:
         st.title(":blue[G]:green[D]:orange[S]:red[C]   :blue[M]:green[C]:orange[E]:red[T] GCSJ :orange[Dashboard] : :red[2023]",anchor=False)
-        # Get today's date
+    #     # Get today's date
 
-    desired_timezone = pytz.timezone('Asia/Kolkata')
+    # desired_timezone = pytz.timezone('Asia/Kolkata')
 
-    # Get the current time in the desired timezone
-    current_time = datetime.datetime.now(desired_timezone)
+    # # Get the current time in the desired timezone
+    # current_time = datetime.datetime.now(desired_timezone)
 
-    # Extract the date
-    today = current_time.date()
-    day = today.day
+    # # Extract the date
+    # today = current_time.date()
+    # day = today.day
 
-    # Format and print today's date in a custom format (e.g., DD/MM/YYYY)
-    formatted_date = today.strftime("%d/%m/%Y")
+    # # Format and print today's date in a custom format (e.g., DD/MM/YYYY)
+    # formatted_date = today.strftime("%d/%m/%Y")
 
     with c2:
-        c7,c8,c9= st.columns([0.2,0.4,0.3])
+        c7,c8,c9= st.columns([0.2,0.4,0.9])
         with c8:
-            st.header(formatted_date)
+            st.header("Oct 3 - Nov 3")
+        with c9:
+            st.header(f"Day: {day}")
 
     st.divider()
     listTabs = [
@@ -204,10 +209,21 @@ if tabs =='Dashboard':
             f'<h1 style="font-family: your-font-family; color: violet;">Tier Status 🚀</h1>',
                 unsafe_allow_html=True
             )
-            progressBar("Tier 3", 40, Tyes_count, "blue", "🥉", "✅")
-            progressBar("Tier 2", 60, Tyes_count, "red", "🥈", "✅")
-            progressBar("Tier 1", 80, Tyes_count, "orange", "🥇", "🎯")
-            st.balloons()
+            if Tyes_count < 40:
+                progressBar("Tier 3", 40, Tyes_count, "blue", "🥉", "🎯")
+            if Tyes_count >= 40:               
+                progressBar("Tier 3", 40, Tyes_count, "blue", "🥉", "✅")
+                st.balloons()
+            if Tyes_count <60:
+                progressBar("Tier 2", 60, Tyes_count, "red", "🥈", "🎯")
+            if Tyes_count >=60:
+                progressBar("Tier 2", 60, Tyes_count, "red", "🥈", "✅")
+                st.snow()
+            if Tyes_count <80:
+                progressBar("Tier 1", 80, Tyes_count, "orange", "🥇", "🎯")
+            if Tyes_count >=80:
+                progressBar("Tier 1", 80, Tyes_count, "orange", "🥇", "🎯")
+            
             st.divider()
     with tab[1]:
         if file is not None :
