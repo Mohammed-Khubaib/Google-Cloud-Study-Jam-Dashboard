@@ -1,7 +1,6 @@
 
 # Google Cloud Study Jam (GCSJ) - GDSC MCET
 ## Dashboard
-
 This repository contains the code for the Study Jam web application that helps you track progress, view the leader board, and more.
 
 ## Getting Started
@@ -37,8 +36,9 @@ pip install -r requirements.txt
 ├── lineChart.py
 ├── pieChart.py
 ├── ProgressBar.py
-├── SheetsConnection.py
+├── SheetsConnection.py(optional to use)
 ├── SubHeadingText.py
+├── GetData.py
 ├── requirements.txt
 ├── style.css
 ├── assets
@@ -51,7 +51,15 @@ pip install -r requirements.txt
 │   ├── gcsj_black.png
 │   ├── img2.png
 │   └── logo.png
+├── GcsjData
+│   ├── 1.csv
+.   .
+.   .
+.   .
+│   │
+│   └── 30.csv
 ```
+
 ---
 ### Required Changes :
 - Replace the url link with your own public Google Sheets Link \
