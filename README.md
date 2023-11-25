@@ -79,8 +79,8 @@ def File():
 
 The web application is live and can be accessed [here](https://gdscmcet.streamlit.app/). Feel free to explore and use the app to track participant progress and view the leader board.
 
-### Web app Preview :
-[Google Cloud Study Jam Video](https://github.com/Mohammed-Khubaib/GDSC_MCET/assets/102320167/ca94a6c8-3575-4271-b7b2-331dd229de68)
+<!--### Web app Preview :
+[Google Cloud Study Jam Video](https://github.com/Mohammed-Khubaib/GDSC_MCET/assets/102320167/ca94a6c8-3575-4271-b7b2-331dd229de68)-->
 
 
 
